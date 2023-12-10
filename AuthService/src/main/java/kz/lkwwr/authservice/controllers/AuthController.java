@@ -25,7 +25,7 @@ public class AuthController {
         return "user";
     }
 
-    @PostMapping("/auth")
+    @PostMapping("/authh")
     public ResponseEntity<JwtResponse> createAuthToken(@RequestBody JwtRequest request) {
         UserDetails userDetails = userService.loadUserByUsername(request.getUsername());
         String token = jwtUtils.generateToken(userDetails);
