@@ -62,12 +62,6 @@ public class AuthController {
 //        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 //    }
 //
-//    @PostMapping("/register")
-//    public ResponseEntity<User> register(@RequestBody User user) {
-//        userService.addUser(user);
-//        return new ResponseEntity<>(user, HttpStatus.CREATED);
-//    }
-//
 //    @PostMapping("/update-user")
 //    public ResponseEntity<User> updateUser(@RequestBody User user) {
 //        userService.saveUser(user);
