@@ -13,6 +13,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CarController {
     private final CarService carService;
+    @GetMapping("/admin")
+    public String admin(){
+        return "Admin";
+    }
 
     @GetMapping("/cars")
     public ResponseEntity<List<Car>> getCars() {

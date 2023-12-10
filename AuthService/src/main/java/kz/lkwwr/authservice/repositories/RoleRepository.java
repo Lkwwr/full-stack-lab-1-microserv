@@ -1,6 +1,6 @@
 package kz.lkwwr.authservice.repositories;
 
-import jakarta.transaction.Transactional;
+import javax.transaction.Transactional;
 import kz.lkwwr.authservice.entities.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

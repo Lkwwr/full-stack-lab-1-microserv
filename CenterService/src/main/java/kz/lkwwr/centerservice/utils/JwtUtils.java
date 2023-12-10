@@ -13,9 +13,6 @@ public class JwtUtils {
     @Value("${jwt.secret}")
     private String secret;
 
-    @Value("${jwt.lifetime}")
-    private Duration lifetime;
-
     public String getUsername(String token) {
         return getAllClaimsFromToken(token).getSubject();
     }
