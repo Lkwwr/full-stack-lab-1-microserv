@@ -26,7 +26,7 @@ public class CenterServiceImpl implements CenterService {
 
     @Override
     public Center getCenter(Long id) {
-        return centerRepository.findById(id).get();
+        return centerRepository.getById(id);
     }
 
     @Override
@@ -36,7 +36,6 @@ public class CenterServiceImpl implements CenterService {
 
     @Override
     public void deleteCenter(Center center) {
-        List<Employee> employees = center.getEmployees();
         centerRepository.delete(center);
     }
 }

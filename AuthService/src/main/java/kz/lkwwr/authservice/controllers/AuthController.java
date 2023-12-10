@@ -3,6 +3,7 @@ package kz.lkwwr.authservice.controllers;
 import kz.lkwwr.authservice.dtos.LoginRequest;
 import kz.lkwwr.authservice.dtos.LoginResponse;
 import kz.lkwwr.authservice.dtos.RegisterRequest;
+import kz.lkwwr.authservice.entities.User;
 import kz.lkwwr.authservice.services.impl.UserServiceImpl;
 import kz.lkwwr.authservice.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -42,29 +45,28 @@ public class AuthController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> getUsers() {
+        List<User> users = userServiceImpl.getUsers();
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
 
-//    @GetMapping("/users")
-//    public ResponseEntity<List<User>> getUsers() {
-//        List<User> users = userService.getUsers();
-//        return new ResponseEntity<>(users, HttpStatus.OK);
-//    }
-//
-//    @GetMapping("/user/{id}")
-//    public ResponseEntity<User> getUser(@PathVariable(name = "id") Long id) {
-//        User user = userService.getUser(id);
-//        return new ResponseEntity<>(user, HttpStatus.OK);
-//    }
-//
-//    @DeleteMapping("/user/{id}")
-//    public ResponseEntity<Void> deleteUser(@PathVariable(name = "id") Long id) {
-//        User user = userService.getUser(id);
-//        userService.deleteUser(user);
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
-//
-//    @PostMapping("/update-user")
-//    public ResponseEntity<User> updateUser(@RequestBody User user) {
-//        userService.saveUser(user);
-//        return new ResponseEntity<>(user, HttpStatus.OK);
-//    }
+    @GetMapping("/user/{id}")
+    public ResponseEntity<User> getUser(@PathVariable(name = "id") Long id) {
+        User user = userServiceImpl.getUser(id);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/user/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable(name = "id") Long id) {
+        User user = userServiceImpl.getUser(id);
+        userServiceImpl.deleteUser(user);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/update-user")
+    public ResponseEntity<User> updateUser(@RequestBody User user) {
+        userServiceImpl.saveUser(user);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
 }
