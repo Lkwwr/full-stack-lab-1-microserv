@@ -5,10 +5,10 @@ import kz.lkwwr.centerservice.entities.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Set;
+import java.util.List;
 
 @Repository
 @Transactional
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
-    Set<Employee> getEmployeesByCenter_Id(Long id);
+    List<Employee> getEmployeesByCenter_Id(Long id);
 }

@@ -1,17 +1,37 @@
 package kz.lkwwr.centerservice.controllers;
 
-import kz.lkwwr.centerservice.dtos.EmployeeDTO;
 import kz.lkwwr.centerservice.entities.Employee;
 import kz.lkwwr.centerservice.services.EmployeeService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
+@RequiredArgsConstructor
 public class EmployeeController {
-    @Autowired
-    private EmployeeService employeeService;
+    private final EmployeeService employeeService;
+
+    @GetMapping("/employees")
+    public ResponseEntity<List<Employee>> getEmployees() {
+        List<Employee> employees = employeeService.getEmployees();
+        return new ResponseEntity<>(employees, HttpStatus.OK);
+    }
+
+    @GetMapping("/employee/{id}")
+    public ResponseEntity<Employee> getEmployee(@PathVariable(name = "id") Long id) {
+        Employee employee = employeeService.getEmployee(id);
+        return new ResponseEntity<>(employee, HttpStatus.OK);
+    }
+
+    @PostMapping("/employee/{id}")
+    public ResponseEntity<Void> deleteEmployee(@PathVariable(name = "id") Long id) {
+        Employee employee = employeeService.getEmployee(id);
+        employeeService.deleteEmployee(employee);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
     @PostMapping("/add-employee")
     public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) {
@@ -19,21 +39,9 @@ public class EmployeeController {
         return new ResponseEntity<>(employee, HttpStatus.CREATED);
     }
 
-    @GetMapping("/employee/{id}")
-    public EmployeeDTO getEmployee(@PathVariable(name = "id") Long id) {
-        Employee employee = employeeService.getEmployee(id);
-        return employeeService.convertToDTO(employee);
-    }
-
-    @PostMapping("/save-employee")
-    public ResponseEntity<Employee> saveEmployee(@RequestBody Employee employee) {
+    @PostMapping("/update-employee")
+    public ResponseEntity<Employee> updateEmployee(@RequestBody Employee employee) {
         employeeService.saveEmployee(employee);
         return new ResponseEntity<>(employee, HttpStatus.OK);
-    }
-
-    @PostMapping("/delete-employee")
-    public void deleteEmployee(@RequestParam(name = "id") Long id) {
-        Employee employee = employeeService.getEmployee(id);
-        employeeService.deleteEmployee(employee);
     }
 }

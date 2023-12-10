@@ -29,6 +29,6 @@ public class Employee {
     private String email;
 
     @ManyToOne
-    @JoinColumn(name = "center_id")
+    @JoinColumn(name = "center_id", referencedColumnName = "id")
     private Center center;
 }

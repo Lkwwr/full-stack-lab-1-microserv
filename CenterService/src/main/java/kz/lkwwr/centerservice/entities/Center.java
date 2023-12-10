@@ -1,12 +1,13 @@
 package kz.lkwwr.centerservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "centers")
@@ -22,6 +23,7 @@ public class Center {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "center", cascade = CascadeType.ALL)
-    private Set<Employee> employees = new HashSet<>();
+    @OneToMany(mappedBy = "center", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Employee> employees = new ArrayList<>();
 }

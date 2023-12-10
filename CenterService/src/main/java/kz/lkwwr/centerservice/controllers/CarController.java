@@ -1,17 +1,24 @@
 package kz.lkwwr.centerservice.controllers;
 
-import kz.lkwwr.centerservice.dtos.CarDTO;
 import kz.lkwwr.centerservice.entities.Car;
 import kz.lkwwr.centerservice.services.CarService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
+@RequiredArgsConstructor
 public class CarController {
-    @Autowired
-    private CarService carService;
+    private final CarService carService;
+
+    @GetMapping("/cars")
+    public ResponseEntity<List<Car>> getCars() {
+        List<Car> cars = carService.getCars();
+        return new ResponseEntity<>(cars, HttpStatus.OK);
+    }
 
     @PostMapping("/add-car")
     public ResponseEntity<Car> addCar(@RequestBody Car car) {
@@ -20,20 +27,21 @@ public class CarController {
     }
 
     @GetMapping("/car/{id}")
-    public CarDTO getCar(@PathVariable(name = "id") Long id) {
+    public ResponseEntity<Car> getCar(@PathVariable(name = "id") Long id) {
         Car car = carService.getCar(id);
-        return carService.convertToDTO(car);
-    }
-
-    @PostMapping("/save-car")
-    public ResponseEntity<Car> saveCar(@RequestBody Car car) {
-        carService.saveCar(car);
         return new ResponseEntity<>(car, HttpStatus.OK);
     }
 
-    @PostMapping("/delete-car")
-    public void deleteCar(@RequestParam(name = "id") Long id) {
+    @DeleteMapping("/car/{id}")
+    public ResponseEntity<Void> deleteCar(@PathVariable(name = "id") Long id) {
         Car car = carService.getCar(id);
         carService.deleteCar(car);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/save-car")
+    public ResponseEntity<Car> updateCar(@RequestBody Car car) {
+        carService.saveCar(car);
+        return new ResponseEntity<>(car, HttpStatus.OK);
     }
 }
