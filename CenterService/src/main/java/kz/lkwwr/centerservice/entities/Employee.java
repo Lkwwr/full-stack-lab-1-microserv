@@ -1,8 +1,10 @@
 package kz.lkwwr.centerservice.entities;
 
+import kz.lkwwr.centerservice.dtos.EmployeeDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
 
 import javax.persistence.*;
 
@@ -32,4 +34,9 @@ public class Employee {
     @ManyToOne
     @JoinColumn(name = "center_id", referencedColumnName = "id")
     private Center center;
+
+    public EmployeeDto toDTO() {
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(this, EmployeeDto.class);
+    }
 }

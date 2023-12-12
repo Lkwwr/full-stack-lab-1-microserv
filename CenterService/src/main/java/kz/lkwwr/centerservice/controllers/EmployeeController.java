@@ -1,6 +1,8 @@
 package kz.lkwwr.centerservice.controllers;
 
+import kz.lkwwr.centerservice.dtos.EmployeeDto;
 import kz.lkwwr.centerservice.entities.Employee;
+import kz.lkwwr.centerservice.services.CenterService;
 import kz.lkwwr.centerservice.services.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EmployeeController {
     private final EmployeeService employeeService;
+    private final CenterService centerService;
 
     @GetMapping("/employees")
     public ResponseEntity<List<Employee>> getEmployees() {
@@ -21,27 +24,32 @@ public class EmployeeController {
     }
 
     @GetMapping("/employee/{id}")
-    public ResponseEntity<Employee> getEmployee(@PathVariable(name = "id") Long id) {
+    public ResponseEntity<EmployeeDto> getEmployee(@PathVariable(name = "id") Long id) {
         Employee employee = employeeService.getEmployee(id);
-        return new ResponseEntity<>(employee, HttpStatus.OK);
+        EmployeeDto employeeDto = employee.toDTO();
+        return new ResponseEntity<>(employeeDto, HttpStatus.OK);
     }
 
-    @PostMapping("/employee/{id}")
+    @DeleteMapping("/admin/employee/{id}")
     public ResponseEntity<Void> deleteEmployee(@PathVariable(name = "id") Long id) {
         Employee employee = employeeService.getEmployee(id);
         employeeService.deleteEmployee(employee);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/add-employee")
-    public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) {
+    @PostMapping("/admin/add-employee")
+    public ResponseEntity<EmployeeDto> addEmployee(@RequestBody EmployeeDto employeeDto) {
+        Employee employee = employeeDto.toEntity();
+        if (employee.getCenter() == null) employee.setCenter(centerService.getCenter(employeeDto.getCenterId()));
         employeeService.addEmployee(employee);
-        return new ResponseEntity<>(employee, HttpStatus.CREATED);
+        return new ResponseEntity<>(employeeDto, HttpStatus.CREATED);
     }
 
-    @PostMapping("/update-employee")
-    public ResponseEntity<Employee> updateEmployee(@RequestBody Employee employee) {
+    @PostMapping("/admin/save-employee")
+    public ResponseEntity<EmployeeDto> updateEmployee(@RequestBody EmployeeDto employeeDto) {
+        Employee employee = employeeDto.toEntity();
+        if (employee.getCenter() == null) employee.setCenter(centerService.getCenter(employeeDto.getCenterId()));
         employeeService.saveEmployee(employee);
-        return new ResponseEntity<>(employee, HttpStatus.OK);
+        return new ResponseEntity<>(employeeDto, HttpStatus.OK);
     }
 }

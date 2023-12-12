@@ -4,7 +4,6 @@ import kz.lkwwr.centerservice.entities.Employee;
 import kz.lkwwr.centerservice.repositories.EmployeeRepository;
 import kz.lkwwr.centerservice.services.EmployeeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

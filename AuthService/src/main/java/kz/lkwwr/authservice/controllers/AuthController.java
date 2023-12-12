@@ -3,6 +3,7 @@ package kz.lkwwr.authservice.controllers;
 import kz.lkwwr.authservice.dtos.LoginRequest;
 import kz.lkwwr.authservice.dtos.LoginResponse;
 import kz.lkwwr.authservice.dtos.RegisterRequest;
+import kz.lkwwr.authservice.dtos.UserDto;
 import kz.lkwwr.authservice.entities.User;
 import kz.lkwwr.authservice.services.impl.UserServiceImpl;
 import kz.lkwwr.authservice.utils.JwtUtils;
@@ -45,28 +46,30 @@ public class AuthController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/users")
+    @GetMapping("/admin/users")
     public ResponseEntity<List<User>> getUsers() {
         List<User> users = userServiceImpl.getUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @GetMapping("/user/{id}")
-    public ResponseEntity<User> getUser(@PathVariable(name = "id") Long id) {
+    @GetMapping("/admin/user/{id}")
+    public ResponseEntity<UserDto> getUser(@PathVariable(name = "id") Long id) {
         User user = userServiceImpl.getUser(id);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        UserDto userDto = user.toDto();
+        return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping("/admin/user/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable(name = "id") Long id) {
         User user = userServiceImpl.getUser(id);
         userServiceImpl.deleteUser(user);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/update-user")
-    public ResponseEntity<User> updateUser(@RequestBody User user) {
+    @PostMapping("/admin/update-user")
+    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto) {
+        User user = userDto.toEntity();
         userServiceImpl.saveUser(user);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 }

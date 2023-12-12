@@ -1,8 +1,10 @@
 package kz.lkwwr.centerservice.dtos;
 
+import kz.lkwwr.centerservice.entities.Car;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,4 +15,9 @@ public class CarDto {
     private String model;
     private String body;
     private int cost;
+
+    public Car toEntity() {
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(this, Car.class);
+    }
 }

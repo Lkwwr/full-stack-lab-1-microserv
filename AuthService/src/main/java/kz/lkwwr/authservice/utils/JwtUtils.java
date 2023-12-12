@@ -1,5 +1,6 @@
 package kz.lkwwr.authservice.utils;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,5 +38,22 @@ public class JwtUtils {
                 .setExpiration(expDate)
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
+    }
+
+    public String getUsername(String token) {
+        return getAllClaimsFromToken(token).getSubject();
+    }
+
+    public List<String> getRoles(String token) {
+        return getAllClaimsFromToken(token).get("roles", List.class);
+    }
+
+    private Claims getAllClaimsFromToken(String token) {
+        return Jwts
+                .parserBuilder()
+                .setSigningKey(secret)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 }

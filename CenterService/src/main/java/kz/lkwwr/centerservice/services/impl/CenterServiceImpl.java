@@ -1,11 +1,9 @@
 package kz.lkwwr.centerservice.services.impl;
 
 import kz.lkwwr.centerservice.entities.Center;
-import kz.lkwwr.centerservice.entities.Employee;
 import kz.lkwwr.centerservice.repositories.CenterRepository;
 import kz.lkwwr.centerservice.services.CenterService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

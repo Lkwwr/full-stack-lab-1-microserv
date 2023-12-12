@@ -1,9 +1,12 @@
 package kz.lkwwr.authservice.entities;
 
 import javax.persistence.*;
+
+import kz.lkwwr.authservice.dtos.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
 
 import java.util.List;
 
@@ -34,4 +37,9 @@ public class User {
             inverseJoinColumns = @JoinColumn(name="role_id")
     )
     private List<Role> roles;
+
+    public UserDto toDto() {
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(this, UserDto.class);
+    }
 }

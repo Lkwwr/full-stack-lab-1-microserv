@@ -1,5 +1,6 @@
 package kz.lkwwr.centerservice.controllers;
 
+import kz.lkwwr.centerservice.dtos.CarDto;
 import kz.lkwwr.centerservice.entities.Car;
 import kz.lkwwr.centerservice.services.CarService;
 import lombok.RequiredArgsConstructor;
@@ -13,10 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CarController {
     private final CarService carService;
-    @GetMapping("/admin")
-    public String admin(){
-        return "Admin";
-    }
 
     @GetMapping("/cars")
     public ResponseEntity<List<Car>> getCars() {
@@ -24,28 +21,31 @@ public class CarController {
         return new ResponseEntity<>(cars, HttpStatus.OK);
     }
 
-    @PostMapping("/add-car")
-    public ResponseEntity<Car> addCar(@RequestBody Car car) {
+    @PostMapping("/admin/add-car")
+    public ResponseEntity<CarDto> addCar(@RequestBody CarDto carDto) {
+        Car car = carDto.toEntity();
         carService.addCar(car);
-        return new ResponseEntity<>(car, HttpStatus.CREATED);
+        return new ResponseEntity<>(carDto, HttpStatus.CREATED);
     }
 
     @GetMapping("/car/{id}")
-    public ResponseEntity<Car> getCar(@PathVariable(name = "id") Long id) {
+    public ResponseEntity<CarDto> getCar(@PathVariable(name = "id") Long id) {
         Car car = carService.getCar(id);
-        return new ResponseEntity<>(car, HttpStatus.OK);
+        CarDto carDto = car.toDTO();
+        return new ResponseEntity<>(carDto, HttpStatus.OK);
     }
 
-    @DeleteMapping("/car/{id}")
+    @DeleteMapping("/admin/car/{id}")
     public ResponseEntity<Void> deleteCar(@PathVariable(name = "id") Long id) {
         Car car = carService.getCar(id);
         carService.deleteCar(car);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/save-car")
-    public ResponseEntity<Car> updateCar(@RequestBody Car car) {
+    @PostMapping("/admin/save-car")
+    public ResponseEntity<CarDto> updateCar(@RequestBody CarDto carDto) {
+        Car car = carDto.toEntity();
         carService.saveCar(car);
-        return new ResponseEntity<>(car, HttpStatus.OK);
+        return new ResponseEntity<>(carDto, HttpStatus.OK);
     }
 }

@@ -1,5 +1,6 @@
 package kz.lkwwr.centerservice.controllers;
 
+import kz.lkwwr.centerservice.dtos.CenterDto;
 import kz.lkwwr.centerservice.entities.Center;
 import kz.lkwwr.centerservice.entities.Employee;
 import kz.lkwwr.centerservice.services.CenterService;
@@ -23,19 +24,21 @@ public class CenterController {
         return new ResponseEntity<>(centers, HttpStatus.OK);
     }
 
-    @PostMapping("/add-center")
-    public ResponseEntity<Center> addCenter(@RequestBody Center center) {
+    @PostMapping("/admin/add-center")
+    public ResponseEntity<CenterDto> addCenter(@RequestBody CenterDto centerDto) {
+        Center center = centerDto.toEntity();
         centerService.addCenter(center);
-        return new ResponseEntity<>(center, HttpStatus.CREATED);
+        return new ResponseEntity<>(centerDto, HttpStatus.CREATED);
     }
 
     @GetMapping("/center/{id}")
-    public ResponseEntity<Center> getCenter(@PathVariable(name = "id") Long id) {
+    public ResponseEntity<CenterDto> getCenter(@PathVariable(name = "id") Long id) {
         Center center = centerService.getCenter(id);
-        return new ResponseEntity<>(center, HttpStatus.OK);
+        CenterDto centerDto = center.toDTO();
+        return new ResponseEntity<>(centerDto, HttpStatus.OK);
     }
 
-    @DeleteMapping("/center/{id}")
+    @DeleteMapping("/admin/center/{id}")
     public ResponseEntity<Void> deleteCenter(@PathVariable(name = "id") Long id) {
         Center center = centerService.getCenter(id);
         centerService.deleteCenter(center);
@@ -48,9 +51,10 @@ public class CenterController {
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
-    @PostMapping("/update-center")
-    public ResponseEntity<Center> updateCenter(@RequestBody Center center) {
+    @PostMapping("/admin/update-center")
+    public ResponseEntity<CenterDto> updateCenter(@RequestBody CenterDto centerDto) {
+        Center center = centerDto.toEntity();
         centerService.saveCenter(center);
-        return new ResponseEntity<>(center, HttpStatus.OK);
+        return new ResponseEntity<>(centerDto, HttpStatus.OK);
     }
 }

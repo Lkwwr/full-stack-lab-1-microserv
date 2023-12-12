@@ -4,7 +4,6 @@ import kz.lkwwr.centerservice.entities.Car;
 import kz.lkwwr.centerservice.repositories.CarRepository;
 import kz.lkwwr.centerservice.services.CarService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

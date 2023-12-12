@@ -1,12 +1,13 @@
 package kz.lkwwr.centerservice.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import kz.lkwwr.centerservice.dtos.CenterDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,5 +26,10 @@ public class Center {
 
     @OneToMany(mappedBy = "center", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<Employee> employees = new ArrayList<>();
+    private List<Employee> employees;
+
+    public CenterDto toDTO() {
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(this, CenterDto.class);
+    }
 }
